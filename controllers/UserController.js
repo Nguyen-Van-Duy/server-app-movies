@@ -86,6 +86,7 @@ export const GetFriendController = async (req, res) => {
 export const GetUserAllController = async (req, res) => {
     try {
         const data = await Users.find()
+        console.log("data:", data);
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error})
