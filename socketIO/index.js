@@ -21,6 +21,7 @@ const connectSocket = (server) => {
     const socketIo = new Server(server, {
         cors: {
           origin: "*",
+          methods: ["GET", "POST"] 
         }
     })
 
