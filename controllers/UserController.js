@@ -1,11 +1,15 @@
 import Users from '../models/Users.js';
 import mongoose from 'mongoose';
+import hash from 'object-hash'
+import jwt from 'jsonwebtoken'
 
-export const UserController = async (req, res) => {
+export const CreateAccount = async (req, res) => {
+    const password = req.body.password
+    const HasPassword = hash.MD5(password)
     const newUsers = new Users({
         userName: req.body.userName,
        email: req.body.email,
-       password: req.body.password
+       password: HasPassword
     })
 
     const data = await Users.find({email: req.body.email})
@@ -26,8 +30,11 @@ export const UserController = async (req, res) => {
 }
 
 export const LoginController = async (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+    const HasPassword = hash.MD5(password)
     try{
-        const data = await Users.find({email: req.body.email, password: req.body.password})
+        const data = await Users.find({email: req.body.email, password: HasPassword})
         // console.log(data);
         if(data.length === 0) {
             res.json({
@@ -37,11 +44,13 @@ export const LoginController = async (req, res) => {
             })
             return
         }
+        const accessToken = jwt.sign({email: email, id: data[0].id}, 'duy', {expiresIn: '10s'})
         res.status(200).json({
             status: 200,
             _id: data[0]._id,
             userName: data[0].userName,
             email: data[0].email,
+            token: accessToken,
         })
 
     } catch(err) {
