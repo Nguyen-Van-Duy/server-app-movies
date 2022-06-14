@@ -3,7 +3,7 @@ import { ConversationController, GetIdConversation } from '../controllers/Conver
 
 const router = express.Router();
 
-router.post('/add', ConversationController)
+router.post('/add-friend', ConversationController)
 router.get('/:userId', GetIdConversation)
 
 

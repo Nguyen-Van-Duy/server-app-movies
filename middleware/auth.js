@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
 
     try {
         const decode = jwt.verify(token, 'duy')
-        console.log("2222222222222222222222222222222222222222222222222222222222", decode);
+        console.log("22222222", decode);
         req.dataAll = decode
         next()
     } catch(err) {

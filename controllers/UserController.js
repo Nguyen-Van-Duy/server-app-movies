@@ -44,7 +44,7 @@ export const LoginController = async (req, res) => {
             })
             return
         }
-        const accessToken = jwt.sign({email: email, id: data[0].id}, 'duy', {expiresIn: '10s'})
+        const accessToken = jwt.sign({email: email, id: data[0].id}, 'duy', {expiresIn: '1000s'})
         res.status(200).json({
             status: 200,
             _id: data[0]._id,
