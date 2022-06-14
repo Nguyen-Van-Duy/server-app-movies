@@ -32,12 +32,20 @@ app.use(cors())
 route(app)
 connectSocket(server)
 
-mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => {
-    console.log('Connected to Mongoose');
-  }).catch(err => {
-    console.log('err', err);
+mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
+  (err, data) => {
+    if (err) return console.log(err)
+  
+    // Storing a reference to the database so you can use it later
+    const db = data.db("MovieApp")
+    console.log(`Connected MongoDB: ${url}`)
+    console.log(`Database: ${dbName}`)
   })
+  // .then(() => {
+  //   console.log('Connected to Mongoose');
+  // }).catch(err => {
+  //   console.log('err', err);
+  // })
 
   //socket
 //   const socketIo = new Server(server, {
