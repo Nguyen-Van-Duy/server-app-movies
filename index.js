@@ -31,96 +31,14 @@ app.use(allowCrossDomain);
 app.use(cors())
 route(app)
 connectSocket(server)
-
-mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
-  (err, data) => {
-    if (err) return console.log(err)
-  
-    // Storing a reference to the database so you can use it later
-    const db = data.db("MovieApp")
-    console.log(`Connected MongoDB: ${url}`)
-    console.log(`Database: ${dbName}`)
+mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true})
+  .then(() => {
+    console.log('Connected to Mongoose');
+  }).catch(err => {
+    console.log('err', err);
   })
-  // .then(() => {
-  //   console.log('Connected to Mongoose');
-  // }).catch(err => {
-  //   console.log('err', err);
-  // })
 
-  //socket
-//   const socketIo = new Server(server, {
-//     cors: {
-//       origin: "*",
-//     }
-//   })
-
-//   let users = []
-//   const addUsers = (userId, socketId) => {
-//     !users.some(item=> item.userId === userId) && users.push({userId, socketId})
-//     console.log(users);
-//   }
-//   const removeUser = (socketId) => {
-//     users = users.filter(user=> user.socketId !== socketId)
-//   }
-
-//   const getUser = userId => {
-//     console.log("id sender:", userId);
-//     console.log("id conversation:", users);
-//     const data = users.find(user => user.userId === userId)
-//     console.log(data);
-//     return data
-//   }
-
-// socketIo.on("connection", (socket) => {
-//   console.log("a user connected.");
-
-//   // when connect 
-//   socket.on("addUser", (userId)=> {
-//     console.log("user id",userId);
-    
-//     addUsers(userId, socket.id)
-//     console.log(" array user id",users);
-//     socketIo.emit("getUsers", users)
-
-//   })
-
-//   //send and get message
-//   socket.on("sendMessage", (data)=> {
-//     console.log("receiverId", data);
-//     const user = getUser(data.receiverId)
-//     console.log("user socketId:",user);
-//     if(user?.socketId) {
-//       socketIo.to(user.socketId).emit("getMessage", {
-//         senderId: data.senderId,
-//         text: data.text,
-//       })
-//     }
-//   })
-
-//   //when disconnect
-//   socket.on("disconnect", () => {
-//     console.log("a user disconnected!");
-//     removeUser(socket.id);
-//     socketIo.emit("getUsers", users);
-//     console.log("user remove: ", users);
-//   });
-  
-
-//   // console.log("New client connected" + socket.id);
-
-//   // socket.emit("getId", socket.id);
-
-//   // socket.on("sendDataClient", function(data) {
-//   //   console.log(data)
-//   //   socketIo.emit("sendDataServer", { data });
-//   // })
-
-//   // socket.on("disconnect", () => {
-//   //   console.log("Client disconnected");
-//   // });
-// });
-
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 8080
 
 server.listen(PORT, () => {
     console.log(`Server đang chay tren cong ${PORT}`);
