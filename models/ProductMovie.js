@@ -1,0 +1,60 @@
+import mongoose from 'mongoose';
+
+const ProductMovieSchema = new mongoose.Schema(
+    {
+        user_id: {
+            type: String
+        },
+        user_name: {
+            type: String
+        },
+        status: {
+            type: String
+        },
+        overview: {
+            type: String
+        },
+        release_date: {
+            type: String
+        }, 
+        backdrop_path: {
+            type: String
+        },
+        name: {
+            type: String
+        },
+        poster_path: {
+            type: String
+        },
+        vote_average: {
+            type: String
+        },
+        runtime: {
+            type: String
+        }, 
+        vote_count: {
+            type: String
+        }, 
+        country: {
+            type: String
+        }, 
+        director: {
+            type: String
+        }, 
+        genres: {
+            type: Array
+        }, 
+        media_type: {
+            type: String
+        }, 
+        url_type: {
+            type: String
+        },
+        url: {
+            type: String
+        },  
+    },
+    { timestamps: true}
+)
+
+export default mongoose.model('ProductMovie', ProductMovieSchema )
