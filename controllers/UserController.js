@@ -7,9 +7,10 @@ export const CreateAccount = async (req, res) => {
     const password = req.body.password
     const HasPassword = hash.MD5(password)
     const newUsers = new Users({
-        userName: req.body.userName,
+        user_name: req.body.user_name,
        email: req.body.email,
-       password: HasPassword
+       password: HasPassword,
+       role: 'user'
     })
 
     const data = await Users.find({email: req.body.email})
@@ -35,7 +36,7 @@ export const LoginController = async (req, res) => {
     const HasPassword = hash.MD5(password)
     try{
         const data = await Users.find({email: req.body.email, password: HasPassword})
-        // console.log(data);
+        console.log("test data", data, data[0].id);
         if(data.length === 0) {
             res.json({
                 status: 401,
@@ -44,11 +45,11 @@ export const LoginController = async (req, res) => {
             })
             return
         }
-        const accessToken = jwt.sign({email: email, id: data[0].id}, 'duy', {expiresIn: '1000s'})
+        const accessToken = jwt.sign({email: email, id: data[0].id, user_name: data[0].user_name}, 'duy', {expiresIn: '1000s'})
         res.status(200).json({
             status: 200,
             _id: data[0]._id,
-            userName: data[0].userName,
+            user_name: data[0].user_name,
             email: data[0].email,
             token: accessToken,
         })

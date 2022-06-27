@@ -5,10 +5,13 @@ const UserSchema = new mongoose.Schema(
         email: {
             type: String
         },
-        userName: {
+        user_name: {
             type: String
         },
         password: {
+            type: String
+        },
+        role: {
             type: String
         }
     }, 
