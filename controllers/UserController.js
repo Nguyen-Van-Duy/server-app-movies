@@ -7,7 +7,7 @@ export const CreateAccount = async (req, res) => {
     const password = req.body.password
     const HasPassword = hash.MD5(password)
     const newUsers = new Users({
-        user_name: req.body.user_name,
+       user_name: req.body.user_name,
        email: req.body.email,
        password: HasPassword,
        role: 'user'
