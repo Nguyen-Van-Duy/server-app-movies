@@ -2,16 +2,16 @@ import mongoose from 'mongoose';
 
 const InvitationSchema = new mongoose.Schema(
     {
-        senderId: {
+        sender_id: {
             type: String
         },
-        receiverId: {
+        receiver_id: {
             type: String
         },
-        senderAvatar: {
+        sender_avatar: {
             type: String
         }, 
-        senderName: {
+        sender_name: {
             type: String
         },
         friend: {

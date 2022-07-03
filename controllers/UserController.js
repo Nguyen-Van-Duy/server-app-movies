@@ -1,7 +1,8 @@
 import Users from '../models/Users.js';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import hash from 'object-hash'
 import jwt from 'jsonwebtoken'
+import Conversation from "../models/Conversation.js";
 
 export const CreateAccount = async (req, res) => {
     const password = req.body.password
@@ -15,15 +16,26 @@ export const CreateAccount = async (req, res) => {
 
     const data = await Users.find({email: req.body.email})
     if(data.length > 0) {
-        res.json({
+        res.status(401).json({
             status: 401,
             message: "Tài khoản đã tồn tại!"
         })
         return
     }
-    
     try {
         const savedUsers = await newUsers.save()
+        console.log(savedUsers,savedUsers._id.toString());
+
+        const dataAdmin = await Users.find({role: 'admin'})
+        console.log("dataAdmin: ", dataAdmin[0]._id);
+        const newConversation = new Conversation({
+            members: [savedUsers._id.toString(), dataAdmin[0]._id.toString()],
+        })
+        try {
+            const savedConversation = await newConversation.save()
+        } catch (error) {
+            console.log(error);
+        }
         res.status(200).json(savedUsers)
     } catch (error) {
         res.status(500).json({ error})
@@ -36,7 +48,7 @@ export const LoginController = async (req, res) => {
     const HasPassword = hash.MD5(password)
     try{
         const data = await Users.find({email: req.body.email, password: HasPassword})
-        console.log("test data", data, data[0].id);
+        // console.log("test data", data, data[0].id);
         if(data.length === 0) {
             res.json({
                 status: 401,
@@ -84,6 +96,15 @@ export const GetUserController = async (req, res) => {
     }
 }
 
+export const GetAdminController = async (req, res) => {
+    try {
+        const data = await Users.find({role: "admin"})
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const GetFriendController = async (req, res) => {
     try {
         const data = await Users.find({_id: req.params.userId})
@@ -96,7 +117,7 @@ export const GetFriendController = async (req, res) => {
 export const GetUserAllController = async (req, res) => {
     try {
         const data = await Users.find()
-        console.log("data:", data);
+        // console.log("data:", data);
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error})

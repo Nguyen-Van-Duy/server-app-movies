@@ -2,13 +2,13 @@ import jwt from "jsonwebtoken"
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.header('Authorization')
-    console.log(authHeader)
+    // console.log(authHeader)
     const token = authHeader && authHeader.split(' ')[1]
     if(!token) return res.sendStatus(401)
 
     try {
         const decode = jwt.verify(token, 'duy')
-        console.log("22222222", decode);
+        // console.log("22222222", decode);
         req.dataAll = decode
         next()
     } catch(err) {

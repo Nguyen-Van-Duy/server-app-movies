@@ -24,17 +24,44 @@ export const GetMessageController = async (req, res) => {
     }
 }
 
+export const GetInvitationController = async (req, res) => {
+    try {
+        const sendInvitations = await Invitation.find({
+            sender_id: req.params.invitationId
+        })
+        const getInvitations = await Invitation.find({
+            receiver_id: req.params.invitationId
+        })
+        const invitations = [...getInvitations, ...sendInvitations]
+        console.log("invitations: ", invitations);
+        res.status(200).json(invitations)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const SendInvitationController = async (req, res) => {
     const newInvitation = new Invitation({
-        senderId: req.body.senderId,
-        receiverId: req.body.receiverId,
-        senderAvatar: req.body.senderAvatar, 
-        senderName: req.body.senderName,
+        sender_id: req.body.sender_id,
+        receiver_id: req.body.receiver_id,
+        sender_avatar: req.body.sender_avatar, 
+        sender_name: req.body.sender_name,
         friend: false, 
     })
     try {
         const savedInvitation = await newInvitation.save()
         res.status(200).json(savedInvitation)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const DeleteInvitationController = async (req, res) => {
+    try {
+        const deleteInvitations = await Invitation.remove({
+            _id: req.params.invitationId
+        })
+        res.status(200).json(deleteInvitations)
     } catch (error) {
         res.status(500).json({ error})
     }

@@ -1,5 +1,5 @@
 import express from 'express';
-import {CreateAccount, LoginController, GetUserController, GetFriendController, GetUserAllController} from "../controllers/UserController.js"
+import {CreateAccount, LoginController, GetUserController, GetFriendController, GetUserAllController, GetAdminController} from "../controllers/UserController.js"
 import verifyToken from "../middleware/auth.js"
 
 const router = express.Router();
@@ -10,6 +10,7 @@ router.get('/refresh', verifyToken, (req, res) => {
 })
 router.post('/login', LoginController)
 router.get('/user/:userId', GetUserController)
+router.get('/admin', GetAdminController)
 router.get('/user', GetUserAllController)
 
 
