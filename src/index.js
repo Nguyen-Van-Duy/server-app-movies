@@ -16,6 +16,8 @@ const server = http.createServer(app);
 app.use(bodyParser.json({ limit: '30mb'}))
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb'}))
 
+app.use(express.static('./src/public'))
+
 const URI = process.env.URI
 
 var allowCrossDomain = function(req, res, next) {
@@ -39,6 +41,7 @@ mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true})
   })
 
 const PORT = process.env.PORT || 8080
+console.log(PORT);
 
 server.listen(PORT, () => {
     console.log(`Server đang chay tren cong ${PORT}`);
