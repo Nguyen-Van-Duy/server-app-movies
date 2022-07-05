@@ -57,13 +57,14 @@ export const LoginController = async (req, res) => {
             })
             return
         }
-        const accessToken = jwt.sign({email: email, id: data[0].id, user_name: data[0].user_name}, 'duy', {expiresIn: '1000s'})
+        const accessToken = jwt.sign({email: email, id: data[0].id, user_name: data[0].user_name, role: data[0].role}, 'duy', {expiresIn: '1000s'})
         res.status(200).json({
             status: 200,
             _id: data[0]._id,
             user_name: data[0].user_name,
             email: data[0].email,
             token: accessToken,
+            role: data[0].role,
         })
 
     } catch(err) {

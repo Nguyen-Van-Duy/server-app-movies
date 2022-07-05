@@ -33,7 +33,7 @@ export const GetInvitationController = async (req, res) => {
             receiver_id: req.params.invitationId
         })
         const invitations = [...getInvitations, ...sendInvitations]
-        console.log("invitations: ", invitations);
+        // console.log("invitations: ", invitations);
         res.status(200).json(invitations)
     } catch (error) {
         res.status(500).json({ error})

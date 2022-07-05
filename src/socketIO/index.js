@@ -2,8 +2,12 @@ import {Server} from "socket.io"
 
 let users = []
 const addUsers = (userId, socketId) => {
+  if(userId ===null) {
+    users = users.filter(user=> user.socketId !== socketId)
+    return
+  }
 !users.some(item=> item.userId === userId) && users.push({userId, socketId})
-// console.log(users);
+console.log("user online: ",users);
 }
 const removeUser = (socketId) => {
 users = users.filter(user=> user.socketId !== socketId)
@@ -26,7 +30,7 @@ const connectSocket = (server) => {
     })
 
     socketIo.on("connection", (socket) => {
-        console.log("a user connected.");
+        console.log("a user connected.", socket.id);
       
         // when connect 
         socket.on("addUser", (userId)=> {
@@ -35,6 +39,7 @@ const connectSocket = (server) => {
           addUsers(userId, socket.id)
           // console.log(" array user id",users);
           socketIo.emit("getUsers", users)
+          console.log("get user:", users);
       
         })
       
