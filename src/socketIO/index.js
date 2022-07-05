@@ -14,10 +14,7 @@ users = users.filter(user=> user.socketId !== socketId)
 }
 
 const getUser = userId => {
-// console.log("id sender:", userId);
-// console.log("id conversation:", users);
 const data = users.find(user => user.userId === userId)
-// console.log(data);
 return data
 }
 
@@ -34,10 +31,8 @@ const connectSocket = (server) => {
       
         // when connect 
         socket.on("addUser", (userId)=> {
-          // console.log("user id",userId);
           
           addUsers(userId, socket.id)
-          // console.log(" array user id",users);
           socketIo.emit("getUsers", users)
           console.log("get user:", users);
       
@@ -45,9 +40,7 @@ const connectSocket = (server) => {
       
         //send and get message
         socket.on("sendMessage", (data)=> {
-          // console.log("receiverId", data);
           const user = getUser(data.receiverId)
-          // console.log("user socketId:",user);
           if(user?.socketId) {
             socketIo.to(user.socketId).emit("getMessage", {
               senderId: data.senderId,
@@ -55,13 +48,18 @@ const connectSocket = (server) => {
             })
           }
         })
+
+        //get and send invitation
+        socket.on("deleteInvitation", data => {
+          console.log(data);
+          socketIo.emit("getDeleteInvitation", data)
+        })
       
         //when disconnect
         socket.on("disconnect", () => {
           // console.log("a user disconnected!");
           removeUser(socket.id);
           socketIo.emit("getUsers", users);
-          // console.log("user remove: ", users);
         });
       
       });

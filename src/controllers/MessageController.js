@@ -44,9 +44,8 @@ export const SendInvitationController = async (req, res) => {
     const newInvitation = new Invitation({
         sender_id: req.body.sender_id,
         receiver_id: req.body.receiver_id,
-        sender_avatar: req.body.sender_avatar, 
+        sender_avatar: req.body.sender_avatar || "image/avatar.jpeg", 
         sender_name: req.body.sender_name,
-        friend: false, 
     })
     try {
         const savedInvitation = await newInvitation.save()

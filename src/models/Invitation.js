@@ -14,9 +14,6 @@ const InvitationSchema = new mongoose.Schema(
         sender_name: {
             type: String
         },
-        friend: {
-            type: Boolean
-        }, 
     },
     { timestamps: true}
 )
