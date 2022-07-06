@@ -21,16 +21,13 @@ const imageFilter = function(req, file, cb) {
         req.fileValidationError = 'Only image files are allowed!';
         return cb(new Error('Only image files are allowed!'), false);
     }
-
     // if (parseInt(req.headers['content-length']) > 500000) {
-        
     //     return alert('dddddđ');
     // }
     cb(null, true);
 };
 
 // let maxSize = 500000
-
 export const upload = multer({
     storage,
     // limits: { fileSize: 500000 },

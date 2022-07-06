@@ -4,6 +4,7 @@ import message from './messages.js';
 import user from './Users.js';
 import movie from './Movies.js';
 import uploadFile from './UploadFiles.js';
+import profileUser from './ProfileUser.js';
 import express from 'express';
 
 let router = express.Router();
@@ -13,6 +14,7 @@ function route(app) {
     router.use('/message', message);
     router.use('/account', user);
     router.use('/film', movie);
+    router.use('/profile', profileUser);
     router.use('/upload', uploadFile)
     return app.use('/api-movie/', router)
 }

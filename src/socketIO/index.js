@@ -54,6 +54,10 @@ const connectSocket = (server) => {
           console.log(data);
           socketIo.emit("getDeleteInvitation", data)
         })
+
+        socket.on("sendInvitationAddFriend", data=> {
+          socketIo.emit("getInvitationAddFriend", data)
+        })
       
         //when disconnect
         socket.on("disconnect", () => {

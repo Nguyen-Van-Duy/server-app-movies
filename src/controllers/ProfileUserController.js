@@ -1,6 +1,9 @@
-export const UploadFileController = async (req, res, next) => {
+// import ProfileUser from '../models/ProfileUser.js';
+import ProfileUsers from "../models/ProfileUsers.js"
+
+export const SendProfileUserController = async (req, res, next) => {
     console.log('views .............', req.file)
-    console.log("data...............", JSON.parse(req.body.email));
+    console.log("data...............", JSON.parse(req.body.data));
     // 'profile_pic' is the name of our file input field in the HTML form
 
         if (req.fileValidationError) {
