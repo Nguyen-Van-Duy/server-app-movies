@@ -3,7 +3,8 @@ import ProfileUsers from "../models/ProfileUsers.js"
 import Users from "../models/Users.js"
 
 export const SendProfileUserController = async (req, res, next) => {
-    console.log('views .............', req.file.filename)
+    // console.log('views .............', req?.files.image_movie[0].filename)
+    // console.log('views 3.............', req.files.image_movie2[0].filename)
     let dataRequest = JSON.parse(req.body.data)
     let dataResponse = {...dataRequest} 
     delete dataResponse.user_id
@@ -11,9 +12,9 @@ export const SendProfileUserController = async (req, res, next) => {
     // delete dataResponse.user_id
 
     console.log("dataResponse", dataResponse);
-    if( req.file) {
-        console.log("image: ");
-        dataResponse.avatar =  `image/${req.file?.filename}`
+    if(req && req.files && req.files?.image_movie[0]) {
+        // console.log("image: ");
+        dataResponse.avatar =  `image/${req.files.image_movie[0].filename}`
     }
 
     const profileUpdate = await ProfileUsers.findOneAndUpdate(
@@ -21,7 +22,7 @@ export const SendProfileUserController = async (req, res, next) => {
         dataResponse,
         { new: true }
     )
-    console.log("data...............", dataRequest);
+    // console.log("data...............", dataRequest);
     console.log("profileUpdate...............", profileUpdate);
     // 'profile_pic' is the name of our file input field in the HTML form
 
@@ -31,14 +32,14 @@ export const SendProfileUserController = async (req, res, next) => {
     // else if (!req.file) {
     //     return res.send('Please select an image to upload');
     // }
-    console.log("2222");
+    // console.log("2222");
     const userUpdate = await Users.findOneAndUpdate(
         { _id: dataRequest.user_id },
         {user_name: dataRequest.user_name},
         { new: true }
     )
 
-        console.log("userUpdate", userUpdate);
+        // console.log("userUpdate", userUpdate);
     // Display uploaded image for user validation
     res.json({
         status: 200,
