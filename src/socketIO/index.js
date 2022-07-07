@@ -7,7 +7,7 @@ const addUsers = (userId, socketId) => {
     return
   }
 !users.some(item=> item.userId === userId) && users.push({userId, socketId})
-console.log("user online: ",users);
+// console.log("user online: ",users);
 }
 const removeUser = (socketId) => {
 users = users.filter(user=> user.socketId !== socketId)
@@ -34,7 +34,7 @@ const connectSocket = (server) => {
           
           addUsers(userId, socket.id)
           socketIo.emit("getUsers", users)
-          console.log("get user:", users);
+          // console.log("get user:", users);
       
         })
       
@@ -51,7 +51,7 @@ const connectSocket = (server) => {
 
         //get and send invitation
         socket.on("deleteInvitation", data => {
-          console.log(data);
+          // console.log(data);
           socketIo.emit("getDeleteInvitation", data)
         })
 

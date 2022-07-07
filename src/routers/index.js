@@ -15,7 +15,7 @@ function route(app) {
     router.use('/account', user);
     router.use('/film', movie);
     router.use('/profile', profileUser);
-    router.use('/upload', uploadFile)
+    // router.use('/upload', uploadFile)
     return app.use('/api-movie/', router)
 }
 
