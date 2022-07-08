@@ -6,10 +6,13 @@ const router = express.Router();
 
 router.post('/upload',upload.fields([
     {
-        name: 'image_movie', maxCount: 1
+        name: 'avatar', maxCount: 1
     },
     {
-        name: 'image_movie2', maxCount: 1
+        name: 'image-backdrop', maxCount: 1
+    },
+    {
+        name: 'image-poster', maxCount: 1
     }
 ]), SendProfileUserController)
 

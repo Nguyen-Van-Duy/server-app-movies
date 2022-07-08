@@ -10,7 +10,11 @@ const storage = multer.diskStorage({
     },
     // By default, multer removes file extensions so let's add them back
     filename: function(req, file, cb) {
-        if(file.fieldname === "image_movie") {
+        if(file.fieldname === "avatar") {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        } else if(file.fieldname === "image_backdrop") {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        } else if(file.fieldname === "image_poster") {
             cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
         } else {
             cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));

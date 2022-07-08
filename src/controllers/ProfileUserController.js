@@ -3,7 +3,7 @@ import ProfileUsers from "../models/ProfileUsers.js"
 import Users from "../models/Users.js"
 
 export const SendProfileUserController = async (req, res, next) => {
-    // console.log('views .............', req?.files.image_movie[0].filename)
+    console.log('views .............', req?.files.avatar[0].filename)
     // console.log('views 3.............', req.files.image_movie2[0].filename)
     let dataRequest = JSON.parse(req.body.data)
     let dataResponse = {...dataRequest} 
@@ -12,9 +12,9 @@ export const SendProfileUserController = async (req, res, next) => {
     // delete dataResponse.user_id
 
     console.log("dataResponse", dataResponse);
-    if(req && req.files && req.files?.image_movie[0]) {
+    if(req && req.files && req.files?.avatar[0]) {
         // console.log("image: ");
-        dataResponse.avatar =  `image/${req.files.image_movie[0].filename}`
+        dataResponse.avatar =  `image/${req.files.avatar[0].filename}`
     }
 
     const profileUpdate = await ProfileUsers.findOneAndUpdate(
