@@ -13,7 +13,7 @@ function route(app) {
     router.use('/conversation', conversation);
     router.use('/message', message);
     router.use('/account', user);
-    router.use('/film', movie);
+    router.use('/movie', movie);
     router.use('/profile', profileUser);
     router.use('/upload', uploadMovie)
     return app.use('/api-movie/', router)
