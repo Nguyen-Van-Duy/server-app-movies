@@ -172,3 +172,34 @@ export const GetUserAllController = async (req, res) => {
         res.status(500).json({ error})
     }
 }
+
+export const ChangePasswordController = async (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+    const newPassword = req.body.newPassword
+    const newHasPassword = hash.MD5(newPassword)
+    const HasPassword = hash.MD5(password)
+    try{
+        const data = await Users.find({email: email, password: HasPassword})
+        console.log("test data", data, data[0].id);
+        if(data.length === 0) {
+            res.json({
+                status: 401,
+                message: "Email hoặc mật khẩu không đúng!",
+                data: data
+            })
+            return
+        }
+        const passwordUpdate = await Users.findOneAndUpdate(
+            { _id: data[0].id },
+            {password: newHasPassword},
+            { new: true }
+        )
+        res.json(passwordUpdate)
+    } catch(err) {
+        res.json({
+            status: 401,
+            message: err
+        })
+    }
+}
