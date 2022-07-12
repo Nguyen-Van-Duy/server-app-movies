@@ -1,6 +1,5 @@
 import FavouriteMovie from '../models/FavouriteMovie.js';
 import ProductMovie from '../models/ProductMovie.js';
-import ProductTV from '../models/ProductTV.js';
 
 export const SendMovieController = async (req, res) => {
     const newMovie = new ProductMovie(req.body)

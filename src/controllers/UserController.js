@@ -53,10 +53,12 @@ export const CreateAccount = async (req, res) => {
         console.log("dataAdmin: ", dataAdmin[0]._id);
         const newConversation = new Conversation({
             members: [savedUsers._id.toString(), dataAdmin[0]._id.toString()],
+            group: false
         })
         try {
             //save convertation
             const savedConversation = await newConversation.save()
+            console.log("savedConversation", savedConversation);
         } catch (error) {
             console.log(error);
         }

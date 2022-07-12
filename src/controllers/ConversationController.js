@@ -4,6 +4,7 @@ export const ConversationController = async (req, res) => {
     console.log("ConversationController: ",req.body.sender_id, req.body.receiver_id);
     const newConversation = new Conversation({
         members: [req.body.sender_id, req.body.receiver_id],
+        group: false
     })
     
     try {
@@ -18,7 +19,8 @@ export const ConversationController = async (req, res) => {
 export const GetIdConversation = async (req, res) => {
     try {
         const conversation = await Conversation.find({
-            members: {$in:[req.params.userId]}
+            members: {$in:[req.params.userId]},
+            group: false
         })
         // console.log(req.params.userId);
         // console.log(conversation);

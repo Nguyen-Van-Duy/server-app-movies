@@ -21,7 +21,7 @@ export const SendProductController = async (req, res, next) => {
         dataResponse.backdrop_path =  `image/${req.files.image_backdrop[0].filename}`
         dataResponse.poster_path =  `image/${req.files.image_poster[0].filename}`
         dataResponse.vote_count =  "0"
-        dataResponse.year =  dataRequest.release_date.silce(0, 4)
+        dataResponse.year =  dataRequest.release_date.slice(0, 4)
         if(dataUser[0].role === "admin") {
             dataResponse.status =  true
         } else if(dataUser[0].role === "user") {
