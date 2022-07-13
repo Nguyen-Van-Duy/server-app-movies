@@ -11,6 +11,9 @@ const ConversationSchema = new mongoose.Schema(
         group: {
             type: Boolean,
         },
+        room_master: {
+            type: String,
+        },
     }, 
     { timestamps: true}
 )
