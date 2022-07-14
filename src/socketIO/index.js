@@ -1,12 +1,12 @@
 import {Server} from "socket.io"
 
 let users = []
-const addUsers = (userId, socketId) => {
+const addUsers = (userId, socketId, shareScreenId) => {
   if(userId ===null) {
     users = users.filter(user=> user.socketId !== socketId)
     return
   }
-!users.some(item=> item.userId === userId) && users.push({userId, socketId})
+!users.some(item=> item.userId === userId) && users.push({userId, socketId, shareScreenId})
 // console.log("user online: ",users);
 }
 const removeUser = (socketId) => {
@@ -27,14 +27,14 @@ const connectSocket = (server) => {
     })
 
     socketIo.on("connection", (socket) => {
-        console.log("a user connected.", socket.id);
+        console.log("a user connected.", socket.id, users);
       
         // when connect 
-        socket.on("addUser", (userId)=> {
+        socket.on("addUser", (data)=> {
           
-          addUsers(userId, socket.id)
+          addUsers(data.userId, socket.id, data.shareScreenId)
           socketIo.emit("getUsers", users)
-          // console.log("get user:", users);
+          console.log("get user:", users);
       
         })
       
@@ -58,6 +58,11 @@ const connectSocket = (server) => {
         socket.on("sendInvitationAddFriend", data=> {
           socketIo.emit("getInvitationAddFriend", data)
         })
+
+        socket.on("sendRTC", data => {
+          console.log(data);
+          socketIo.emit("getRTC", data)
+        })
       
         //when disconnect
         socket.on("disconnect", () => {
@@ -67,7 +72,6 @@ const connectSocket = (server) => {
         });
       
       });
-
 }
 
 export default connectSocket;
