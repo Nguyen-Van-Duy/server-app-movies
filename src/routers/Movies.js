@@ -5,12 +5,14 @@ import { SendMovieController,
     AddFavouriteController, 
     GetFavouriteController, 
     DeleteFavouriteController, 
-    GetMyFavouriteController 
+    GetMyFavouriteController ,
+    AddMovieHistoryController
 } from '../controllers/MovieController.js';
 
 const router = express.Router();
 
 router.post('/add-movie', SendMovieController)
+router.post('/add-movie-history', AddMovieHistoryController)
 router.get('/movie-waiting/:userId', GetMovieWaitingController)
 router.get('/my-movie/:userId', GetMyMovieController)
 router.post('/add-favourite', AddFavouriteController)
