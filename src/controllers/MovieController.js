@@ -59,13 +59,16 @@ export const GetMovieHistoryController = async (req, res) => {
 }
 
 export const AddMovieHistoryController = async (req, res) => {
+    let month = new Date().getMonth() + 1
+    if(month < 10) {
+        month = '0' + month
+    }
     const dataRequest = {
         user_id: req.body.user_id,
         movie_id: req.body.movie_id,
         category: req.body.category,
         genres: req.body.genres,
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1
+        time: new Date().getFullYear() + '-' + month
     }
     console.log("dataRequest", dataRequest);
     // const dataMovie = await History.find(dataRequest)

@@ -11,10 +11,7 @@ const HistorySchema = new mongoose.Schema(
         category: {
             type: String
         },
-        year: {
-            type: String
-        },
-        month: {
+        time: {
             type: String
         },
         genres: {

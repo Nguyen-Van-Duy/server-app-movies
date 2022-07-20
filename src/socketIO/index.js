@@ -41,6 +41,7 @@ const connectSocket = (server) => {
         //send and get message
         socket.on("sendMessage", (data)=> {
           const user = getUser(data.receiverId)
+          console.log("user: ", data.receiverId);
           if(user?.socketId) {
             socketIo.to(user.socketId).emit("getMessage", {
               senderId: data.senderId,
