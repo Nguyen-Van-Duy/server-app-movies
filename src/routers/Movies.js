@@ -7,7 +7,8 @@ import { SendMovieController,
     DeleteFavouriteController, 
     GetMyFavouriteController ,
     AddMovieHistoryController,
-    GetMovieHistoryController
+    GetMovieHistoryController,
+    DeleteMovieHistoryController
 } from '../controllers/MovieController.js';
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.get('/movie-history/:userId', GetMovieHistoryController)
 router.get('/my-movie/:userId', GetMyMovieController)
 router.post('/add-favourite', AddFavouriteController)
 router.delete('/delete-favourite/:favouriteId', DeleteFavouriteController)
+router.post('/delete-history', DeleteMovieHistoryController)
 router.get('/favourite/:userId/:movieId', GetFavouriteController)
 router.get('/my-favourite/:userId', GetMyFavouriteController)
 

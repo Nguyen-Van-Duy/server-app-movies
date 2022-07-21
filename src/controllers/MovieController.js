@@ -58,6 +58,23 @@ export const GetMovieHistoryController = async (req, res) => {
     }
 }
 
+export const DeleteMovieHistoryController = async (req, res) => {
+    console.log(req.body.list_id);
+    try {
+        await History.deleteMany({
+            _id: {
+                $in: req.body.list_id
+              }
+        })
+        const dataMovie = await History.find({
+            user_id: req.body.userId,
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const AddMovieHistoryController = async (req, res) => {
     let month = new Date().getMonth() + 1
     if(month < 10) {
