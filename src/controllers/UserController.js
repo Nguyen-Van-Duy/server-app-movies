@@ -17,9 +17,9 @@ export const CreateAccount = async (req, res) => {
 
     const data = await Users.find({email: req.body.email})
     if(data.length > 0) {
-        res.status(401).json({
-            status: 401,
-            message: "Tài khoản đã tồn tại!"
+        res.status(409).json({
+            status: 409,
+            message: "Account already exists!"
         })
         return
     }

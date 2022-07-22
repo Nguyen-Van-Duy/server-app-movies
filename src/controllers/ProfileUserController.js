@@ -3,8 +3,7 @@ import ProfileUsers from "../models/ProfileUsers.js"
 import Users from "../models/Users.js"
 
 export const SendProfileUserController = async (req, res, next) => {
-    console.log('views .............', req?.files.avatar[0].filename)
-    // console.log('views 3.............', req.files.image_movie2[0].filename)
+    console.log('views 3.............', req)
     let dataRequest = JSON.parse(req.body.data)
     let dataResponse = {...dataRequest} 
     delete dataResponse.user_id
@@ -12,8 +11,7 @@ export const SendProfileUserController = async (req, res, next) => {
     // delete dataResponse.user_id
 
     console.log("dataResponse", dataResponse);
-    if(req && req.files && req.files?.avatar[0]) {
-        // console.log("image: ");
+    if(req && req.files && req.files?.avatar &&  req.files?.avatar[0]) {
         dataResponse.avatar =  `image/${req.files.avatar[0].filename}`
     }
 
@@ -22,7 +20,6 @@ export const SendProfileUserController = async (req, res, next) => {
         dataResponse,
         { new: true }
     )
-    // console.log("data...............", dataRequest);
     console.log("profileUpdate...............", profileUpdate);
     // 'profile_pic' is the name of our file input field in the HTML form
 
