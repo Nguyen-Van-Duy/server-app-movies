@@ -9,6 +9,7 @@ export const SendProductController = async (req, res, next) => {
     let dataRequest = JSON.parse(req.body.data)
     // ProductMovie
     let dataResponse = {...dataRequest} 
+    console.log("dataRequest:", dataRequest);
     // delete dataResponse.user_id
     // delete dataResponse.user_name
     const dataUser = await Users.find({_id: dataResponse.user_id})
@@ -31,9 +32,10 @@ export const SendProductController = async (req, res, next) => {
     // console.log("data: ................", dataResponse);
 
     const newProductMovie = new ProductMovie(dataResponse)
+    console.log("newProductMovie:", newProductMovie);
     try {
         const savedProductMovie = await newProductMovie.save()
-        res.status(200).json(savedProductMovie)
+        res.status(200).json(savedProductMovie|| {})
     } catch (error) {
         res.status(500).json({ error})
     }

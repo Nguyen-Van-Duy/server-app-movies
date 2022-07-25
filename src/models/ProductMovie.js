@@ -23,6 +23,7 @@ const ProductMovieSchema = new mongoose.Schema(
         number_of_episodes: {type: String},
         number_of_seasons: {type: String},
         seasons: {type: Array},
+        trailers: {type: Array},
     },
     { timestamps: true}
 )
