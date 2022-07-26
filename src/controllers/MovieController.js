@@ -1,6 +1,7 @@
 import FavouriteMovie from '../models/FavouriteMovie.js';
 import History from '../models/History.js';
 import ProductMovie from '../models/ProductMovie.js';
+import Users from '../models/Users.js';
 
 export const SendMovieController = async (req, res) => {
     const newMovie = new ProductMovie(req.body)
@@ -12,11 +13,23 @@ export const SendMovieController = async (req, res) => {
     }
 }
 
+export const GetMovieDetailController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            _id: req.params.movieId,
+            approval: true
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const GetMovieWaitingController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             user_id: req.params.userId,
-            status: false
+            approval: false
         })
         res.status(200).json(dataMovie)
     } catch (error) {
@@ -28,7 +41,7 @@ export const GetMyMovieController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             user_id: req.params.userId,
-            status: true
+            approval: true
         })
         res.status(200).json(dataMovie)
     } catch (error) {
@@ -147,5 +160,23 @@ export const DeleteFavouriteController = async (req, res) => {
         res.status(200).json(deleteFavouriteMovie)
     } catch (error) {
         res.status(500).json({ error})
+    }
+}
+
+export const DeleteMyMovieController = async (req, res) => {
+    const dataUser = await Users.find({_id: req.dataAll._id})
+    console.log("dataUser: ", dataUser);
+    if(dataUser) {
+        const dataRequest = {
+            _id: req.params.movieId,
+        }
+        try {
+            const deleteMyMovie = await ProductMovie.remove(dataRequest)
+            res.status(200).json(deleteMyMovie)
+        } catch (error) {
+            res.status(500).json({ error})
+        }
+    } else {
+        res.status(401).json({message: "401"})
     }
 }

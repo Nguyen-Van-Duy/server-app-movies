@@ -185,9 +185,8 @@ export const ChangePasswordController = async (req, res) => {
         const data = await Users.find({email: email, password: HasPassword})
         console.log("test data", data, data[0].id);
         if(data.length === 0) {
-            res.json({
-                status: 401,
-                message: "Email hoặc mật khẩu không đúng!",
+            res.status(401).json({
+                message: "Incorrect password!",
                 data: data
             })
             return
@@ -199,9 +198,8 @@ export const ChangePasswordController = async (req, res) => {
         )
         res.json(passwordUpdate)
     } catch(err) {
-        res.json({
-            status: 401,
-            message: err
+        res.status(401).json({
+            message: 'Incorrect password!'
         })
     }
 }
