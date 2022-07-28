@@ -10,7 +10,8 @@ import { SendMovieController,
     GetMovieHistoryController,
     DeleteMovieHistoryController,
     DeleteMyMovieController,
-    GetMovieDetailController
+    GetMovieDetailController,
+    GetMovieWaitingAdminController
 } from '../controllers/MovieController.js';
 import verifyToken from '../middleware/auth.js';
 
@@ -19,6 +20,7 @@ const router = express.Router();
 router.post('/add-movie', SendMovieController)
 router.post('/add-movie-history', AddMovieHistoryController)
 router.get('/movie-waiting/:userId', GetMovieWaitingController)
+router.get('/movie-waiting', GetMovieWaitingAdminController)
 router.get('/movie-history/:userId', GetMovieHistoryController)
 router.get('/my-movie/:userId', GetMyMovieController)
 router.get('/movie-detail/:movieId', GetMovieDetailController)

@@ -17,7 +17,18 @@ export const GetMovieDetailController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             _id: req.params.movieId,
-            approval: true
+            approval: "1"
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const GetMovieWaitingAdminController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            approval: "1"
         })
         res.status(200).json(dataMovie)
     } catch (error) {
@@ -29,7 +40,7 @@ export const GetMovieWaitingController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             user_id: req.params.userId,
-            approval: false
+            approval: "0"
         })
         res.status(200).json(dataMovie)
     } catch (error) {
@@ -41,7 +52,7 @@ export const GetMyMovieController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             user_id: req.params.userId,
-            approval: true
+            approval: "1"
         })
         res.status(200).json(dataMovie)
     } catch (error) {

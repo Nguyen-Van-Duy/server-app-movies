@@ -4,7 +4,7 @@ const ProductMovieSchema = new mongoose.Schema(
     {
         user_id: {type: String},
         user_name: {type: String},
-        approval: {type: Boolean},
+        approval: {type: String},
         delete: {type: Boolean},
         overview: {type: String},
         release_date: {type: String}, 
@@ -17,7 +17,6 @@ const ProductMovieSchema = new mongoose.Schema(
         country: {type: String}, 
         director: {type: String}, 
         media_type: {type: String}, 
-        url_type: {type: String},
         url: {type: String},
         year: {type: String},    
         genres: {type: Array}, 
