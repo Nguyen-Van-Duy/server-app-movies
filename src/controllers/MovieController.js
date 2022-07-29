@@ -25,14 +25,44 @@ export const GetMovieDetailController = async (req, res) => {
     }
 }
 
-export const GetMovieWaitingAdminController = async (req, res) => {
+export const GetMovieDetailFavouriteController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
-            approval: "1"
+            _id: req.params.movieId
         })
         res.status(200).json(dataMovie)
     } catch (error) {
         res.status(500).json({ error})
+    }
+}
+
+export const GetMovieWaitingAdminController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            approval: "0"
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const UpdateApprovalController = async (req, res) => {
+    const dataUser = await Users.find({_id: req.dataAll._id})
+    console.log("dataUser: ", dataUser);
+    if(dataUser[0].role === "admin") {
+        try {
+            const dataMovie = await ProductMovie.findOneAndUpdate(
+                { _id: req.body.movie_id },
+                {approval: req.body.approval},
+                { new: true }
+            )
+            res.status(200).json(dataMovie)
+        } catch (error) {
+            res.status(500).json({ error})
+        }
+    } else {
+        res.status(401).json({message: "401"})
     }
 }
 
