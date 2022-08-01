@@ -1,17 +1,33 @@
 import {Server} from "socket.io"
 
 let users = []
-const addUsers = (userId, socketId, shareScreenId) => {
+let groupRTC = []
+const addUsers = (userId, socketId) => {
   if(userId ===null) {
     users = users.filter(user=> user.socketId !== socketId)
     return
   }
-!users.some(item=> item.userId === userId) && users.push({userId, socketId, shareScreenId})
+!users.some(item=> item.userId === userId) && users.push({userId, socketId})
 // console.log("user online: ",users);
 }
+
+const setGroupPeer = (data) => {
+  if(data.userId ===null) {
+    groupRTC = groupRTC.filter(user=> user.socketId !== data.socketId)
+    return
+  }
+!groupRTC.some(item=> item.userId === data.userId) && groupRTC.push(data)
+// console.log("user online: ",users);
+}
+
+const removeUserRTC = (socketId) => {
+  groupRTC = groupRTC.filter(user=> user.socketId !== socketId)
+}
+
 const removeUser = (socketId) => {
 users = users.filter(user=> user.socketId !== socketId)
 }
+
 
 const getUser = userId => {
 const data = users.find(user => user.userId === userId)
@@ -32,7 +48,7 @@ const connectSocket = (server) => {
         // when connect 
         socket.on("addUser", (data)=> {
           
-          addUsers(data.userId, socket.id, data.shareScreenId)
+          addUsers(data.userId, socket.id)
           socketIo.emit("getUsers", users)
           console.log("get user:", users);
       
@@ -60,14 +76,18 @@ const connectSocket = (server) => {
           socketIo.emit("getInvitationAddFriend", data)
         })
 
-        socket.on("sendRTC", data => {
-          console.log(data);
-          socketIo.emit("getRTC", data)
+        //RTC
+        socket.on("addGroupRTC", data => {
+          const params = {...data, socketId: socket.id}
+          setGroupPeer(params)
+          console.log("groupRTC: ", groupRTC);
+          socketIo.emit("getGroupRTC", groupRTC)
         })
       
         //when disconnect
         socket.on("disconnect", () => {
           // console.log("a user disconnected!");
+          removeUserRTC(socket.id)
           removeUser(socket.id);
           socketIo.emit("getUsers", users);
         });
