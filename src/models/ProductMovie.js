@@ -4,8 +4,10 @@ const ProductMovieSchema = new mongoose.Schema(
     {
         user_id: {type: String},
         user_name: {type: String},
+        movie_id: {type: String},
         approval: {type: String},
         delete: {type: Boolean},
+        update: {type: Boolean},
         overview: {type: String},
         release_date: {type: String}, 
         backdrop_path: {type: String},
