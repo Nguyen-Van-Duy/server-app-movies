@@ -13,6 +13,54 @@ export const SendMovieController = async (req, res) => {
     }
 }
 
+export const SearchController = async (req, res) => {
+    const userRegex = new RegExp(req.params.search, 'i')
+    const resultsPerPage = 1;
+    let page = req.params.page >= 1 ? req.params.page : 1;
+    // const query = req.query.search;
+
+    page = page - 1
+    try {
+        const dataMovie = await ProductMovie.find({
+            //dk
+            name: userRegex
+        })
+        // .select("name")
+        .sort({ name: "asc" })
+        .limit(resultsPerPage)
+        .skip(resultsPerPage * page)
+
+        ProductMovie.countDocuments({ name: userRegex, approval: "1"}, function (err, count) {
+            if (err){
+                console.log(err)
+            }else{
+                console.log("Count :", count)
+                res.status(200).json({
+                    data:dataMovie, 
+                    total_results: count, 
+                    per_page: resultsPerPage, 
+                    total_pages: Math.ceil(count / resultsPerPage),
+                    page: req.params.page
+
+                })
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const GetMovieAllController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            approval: "1"
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const GetMovieDetailController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
