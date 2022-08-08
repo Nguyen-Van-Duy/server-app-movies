@@ -5,6 +5,9 @@ const ConversationSchema = new mongoose.Schema(
         members: {
             type: Array,
         },
+        list_user: {
+            type: Array,
+        },
         room_name: {
             type: String,
         },

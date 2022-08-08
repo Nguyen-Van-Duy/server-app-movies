@@ -53,6 +53,14 @@ export const CreateAccount = async (req, res) => {
         console.log("dataAdmin: ", dataAdmin[0]._id);
         const newConversation = new Conversation({
             members: [savedUsers._id.toString(), dataAdmin[0]._id.toString()],
+            list_user: [{
+                user_id: savedUsers._id.toString(),
+                notification: "1"
+            },
+            {
+                user_id: dataAdmin[0]._id.toString(),
+                notification: "1"
+            }],
             group: false
         })
         try {
@@ -140,7 +148,17 @@ export const GetDataInfo = async (req, res) => {
 
 export const GetUserController = async (req, res) => {
     try {
-        const data = await Users.findById(req.params.userId)
+        let data = await Users.findById(req.params.userId)
+        
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const GetProfileController = async (req, res) => {
+    try {
+        let data = await ProfileUsers.find({user_id: req.params.userId})
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error})
@@ -168,7 +186,6 @@ export const GetFriendController = async (req, res) => {
 export const GetUserAllController = async (req, res) => {
     try {
         const data = await Users.find()
-        // console.log("data:", data);
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error})

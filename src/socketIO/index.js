@@ -2,6 +2,7 @@ import {Server} from "socket.io"
 
 let users = []
 let groupRTC = []
+let groupNotification = []
 const addUsers = (userId, socketId) => {
   if(userId ===null) {
     users = users.filter(user=> user.socketId !== socketId)
@@ -25,13 +26,27 @@ const removeUserRTC = (socketId) => {
 }
 
 const removeUser = (socketId) => {
-users = users.filter(user=> user.socketId !== socketId)
+  users = users.filter(user=> user.socketId !== socketId)
 }
 
 
 const getUser = userId => {
-const data = users.find(user => user.userId === userId)
-return data
+  const data = users.find(user => user.userId === userId)
+  return data
+}
+
+const handleGroupNotification = listNotification => {
+  if(groupNotification.length > 0) {
+    const newArray = []
+    const result = listNotification.forEach(data => {
+      if(!groupNotification.find(item=>item._id === data._id)) {
+        newArray.push(data)
+      }
+    })
+    groupNotification.concat(newArray)
+  } else {
+    groupNotification = listNotification
+  }
 }
 
 const connectSocket = (server) => {
@@ -74,6 +89,12 @@ const connectSocket = (server) => {
 
         socket.on("sendInvitationAddFriend", data=> {
           socketIo.emit("getInvitationAddFriend", data)
+        })
+
+        //get notification
+        socket.on("Group-Notification", listNotification => {
+          handleGroupNotification(listNotification)
+          console.log("notification: ", groupNotification);
         })
 
         //RTC
