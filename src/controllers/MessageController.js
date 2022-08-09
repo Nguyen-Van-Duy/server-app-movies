@@ -14,7 +14,6 @@ export const SendMessageController = async (req, res) => {
 
 export const GetMessageController = async (req, res) => {
     try {
-        // console.log(req.params.conversationId);
         const messages = await Message.find({
             conversationId: req.params.conversationId
         })
@@ -33,7 +32,6 @@ export const GetInvitationController = async (req, res) => {
             receiver_id: req.params.invitationId
         })
         const invitations = [...getInvitations, ...sendInvitations]
-        // console.log("invitations: ", invitations);
         res.status(200).json(invitations)
     } catch (error) {
         res.status(500).json({ error})

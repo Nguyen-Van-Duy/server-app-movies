@@ -48,7 +48,6 @@ export const SendCommentController = async (req, res) => {
     
     try {
         const saveComment = await newComment.save()
-        console.log("saveComment", saveComment);
         res.status(200).json(saveComment)
     } catch (error) {
         res.status(500).json({ error})

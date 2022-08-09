@@ -36,7 +36,7 @@ const getUser = userId => {
 }
 
 const handleGroupNotification = listNotification => {
-  if(groupNotification.length > 0) {
+  if(groupNotification.length > 0 && listNotification.length > 0) {
     const newArray = []
     const result = listNotification.forEach(data => {
       if(!groupNotification.find(item=>item._id === data._id)) {
@@ -47,6 +47,41 @@ const handleGroupNotification = listNotification => {
   } else {
     groupNotification = listNotification
   }
+}
+
+const setNotification = (data, id, currentChat) => {
+  if(groupNotification.length <= 0) {
+    return
+  }
+  if(currentChat) {
+    const indexRoomClose = groupNotification.findIndex(item=> item._id === currentChat._id)
+    const indexOfListUser = currentChat.list_user.findIndex(item=> item.in_room === true)
+    if(groupNotification[indexRoomClose]) {
+      groupNotification[indexRoomClose].list_user[indexOfListUser] = {...groupNotification[indexRoomClose].list_user[indexOfListUser], in_room: false}
+    }
+  }
+  const index = groupNotification.findIndex(item=> item._id === id)
+  if(groupNotification[index]) {
+    const indexItem = groupNotification[index].list_user.findIndex(item=> item.user_id === data.user_id)
+    groupNotification[index].list_user[indexItem] = data
+  }
+  return groupNotification[index]
+}
+
+const addNotification = data => {
+  if(groupNotification.length <= 0) {
+    return
+  }
+  const index = groupNotification.findIndex(item=>item._id === data.conversationId)
+  groupNotification[index].list_user.forEach((item, indexOfListUser)=>{
+    if(item.user_id !== data.senderId) {
+      if(!item.in_room) {
+        const notificationChange = groupNotification[index].list_user[indexOfListUser]
+        groupNotification[index].list_user[indexOfListUser] = {...notificationChange, notification: Number(notificationChange.notification) + 1}
+      }
+    }
+  })
+  return groupNotification[index].list_user
 }
 
 const connectSocket = (server) => {
@@ -65,14 +100,12 @@ const connectSocket = (server) => {
           
           addUsers(data.userId, socket.id)
           socketIo.emit("getUsers", users)
-          console.log("get user:", users);
       
         })
       
         //send and get message
         socket.on("sendMessage", (data)=> {
           const user = getUser(data.receiverId)
-          console.log("user: ", data.receiverId);
           if(user?.socketId) {
             socketIo.to(user.socketId).emit("getMessage", {
               senderId: data.senderId,
@@ -92,9 +125,21 @@ const connectSocket = (server) => {
         })
 
         //get notification
-        socket.on("Group-Notification", listNotification => {
-          handleGroupNotification(listNotification)
-          console.log("notification: ", groupNotification);
+        socket.on("GroupNotification", listNotification => {
+          handleGroupNotification(listNotification.userConversation)
+
+          // socketIo.emit("GetGroupNotification", groupNotification)
+        })
+
+        socket.on("InRoom", notification => {
+          const newData = setNotification(notification.newNotification, notification.id, notification.currentChat);
+          socketIo.emit("GetRoom", groupNotification)
+        })
+
+        socket.on("AddNotification", notification => {
+          const newNumber = addNotification(notification)
+          console.log("newNumber: ", newNumber);
+          socketIo.emit("GetNotification", groupNotification)
         })
 
         //RTC

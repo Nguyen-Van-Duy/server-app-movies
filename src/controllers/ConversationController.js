@@ -1,23 +1,23 @@
 import Conversation from "../models/Conversation.js";
 
 export const ConversationController = async (req, res) => {
-    console.log("ConversationController: ",req.body.sender_id, req.body.receiver_id);
     const newConversation = new Conversation({
         members: [req.body.sender_id, req.body.receiver_id],
         list_user: [{
             user_id: req.body.sender_id,
-            notification: "1"
+            notification: 1,
+            in_room: false
         },
         {
             user_id: req.body.receiver_id,
-            notification: "1"
+            notification: 1,
+            in_room: false
         }],
         group: false
     })
     
     try {
         const savedConversation = await newConversation.save()
-        console.log("savedConversation", savedConversation);
         res.status(200).json(savedConversation)
     } catch (error) {
         res.status(500).json({ error})
@@ -29,11 +29,13 @@ export const GroupConversationController = async (req, res) => {
         members: [req.body.sender_id, req.body.receiver_id],
         list_user: [{
             user_id: req.body.sender_id,
-            notification: "1"
+            notification: 1,
+            in_room: false
         },
         {
             user_id: req.body.receiver_id,
-            notification: "1"
+            notification: 1,
+            in_room: false
         }],
         group: true,
         room_name: req.body.room_name,
@@ -42,7 +44,6 @@ export const GroupConversationController = async (req, res) => {
     
     try {
         const savedConversation = await newConversation.save()
-        console.log("savedConversation", savedConversation);
         res.status(200).json(savedConversation)
     } catch (error) {
         res.status(500).json({ error})
@@ -50,8 +51,6 @@ export const GroupConversationController = async (req, res) => {
 }
 
 export const ChangeNotificationController = async (req, res) => {
-    console.log("id: ", req.body.id);
-    console.log("new_notification: ", req.body.new_notification);
     try {
         const notificationNew = await Conversation.findOneAndUpdate(
             { _id: req.body.id },

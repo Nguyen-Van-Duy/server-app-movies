@@ -27,7 +27,6 @@ export const CreateAccount = async (req, res) => {
     try {
         //save new account
         const savedUsers = await newUsers.save()
-        console.log(savedUsers,savedUsers._id.toString());
         const newProfile = new ProfileUsers(
             {
                 user_id: savedUsers._id.toString(),
@@ -50,23 +49,23 @@ export const CreateAccount = async (req, res) => {
 
         //create convertation
         const dataAdmin = await Users.find({role: 'admin'})
-        console.log("dataAdmin: ", dataAdmin[0]._id);
         const newConversation = new Conversation({
             members: [savedUsers._id.toString(), dataAdmin[0]._id.toString()],
             list_user: [{
                 user_id: savedUsers._id.toString(),
-                notification: "1"
+                notification: 1,
+                in_room: false
             },
             {
                 user_id: dataAdmin[0]._id.toString(),
-                notification: "1"
+                notification: 1,
+                in_room: false
             }],
             group: false
         })
         try {
             //save convertation
             const savedConversation = await newConversation.save()
-            console.log("savedConversation", savedConversation);
         } catch (error) {
             console.log(error);
         }
@@ -82,7 +81,6 @@ export const LoginController = async (req, res) => {
     const HasPassword = hash.MD5(password)
     try{
         const data = await Users.find({email: req.body.email, password: HasPassword})
-        console.log("test data", data, data[0].id);
         if(data.length === 0) {
             res.json({
                 status: 401,
@@ -92,7 +90,6 @@ export const LoginController = async (req, res) => {
             return
         }
         const dataProfile = await ProfileUsers.find({user_id: data[0]._id.toString()})
-        console.log(dataProfile);
         const accessToken = jwt.sign({email: email, _id: data[0].id, user_name: data[0].user_name, role: data[0].role}, 'duy', {expiresIn: '100000s'})
         res.status(200).json({
             status: 200,
@@ -122,10 +119,8 @@ export const LoginController = async (req, res) => {
 }
 
 export const GetDataInfo = async (req, res) => {
-    console.log("req.dataAll", req.dataAll);
     const dataProfile = await ProfileUsers.find({user_id: req.dataAll._id})
     const dataUser = await Users.find({_id: req.dataAll._id})
-        console.log(dataProfile);
     res.json({
         status: 200,
         _id: req.dataAll._id,
@@ -200,7 +195,6 @@ export const ChangePasswordController = async (req, res) => {
     const HasPassword = hash.MD5(password)
     try{
         const data = await Users.find({email: email, password: HasPassword})
-        console.log("test data", data, data[0].id);
         if(data.length === 0) {
             res.status(401).json({
                 message: "Incorrect password!",

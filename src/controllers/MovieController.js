@@ -97,7 +97,6 @@ export const GetMovieWaitingAdminController = async (req, res) => {
 
 export const UpdateApprovalController = async (req, res) => {
     const dataUser = await Users.find({_id: req.dataAll._id})
-    console.log("dataUser: ", dataUser);
     if(dataUser[0].role === "admin") {
         try {
             const dataMovie = await ProductMovie.findOneAndUpdate(
@@ -161,7 +160,6 @@ export const GetMovieHistoryController = async (req, res) => {
 }
 
 export const DeleteMovieHistoryController = async (req, res) => {
-    console.log(req.body.list_id);
     try {
         await History.deleteMany({
             _id: {
@@ -189,13 +187,11 @@ export const AddMovieHistoryController = async (req, res) => {
         genres: req.body.genres,
         time: new Date().getFullYear() + '-' + month
     }
-    console.log("dataRequest", dataRequest);
     // const dataMovie = await History.find(dataRequest)
     // if(dataMovie.length <= 0) {
         const newMovie = new History(dataRequest)
         try {
             const savedMovie = await newMovie.save()
-                console.log("newMovienewMovienewMovienewMovie", savedMovie);
             res.status(200).json(savedMovie)
         } catch (error) {
             res.status(500).json({ error})
@@ -211,11 +207,9 @@ export const AddFavouriteController = async (req, res) => {
         movie_id: req.body.movie_id,
         category: req.body.category
     }
-    console.log("dataRequest", dataRequest);
     const dataMovie = await FavouriteMovie.find(dataRequest)
     if(dataMovie.length <= 0) {
         const newMovie = new FavouriteMovie(dataRequest)
-        console.log("newMovienewMovienewMovienewMovie", newMovie);
         try {
             const savedMovie = await newMovie.save()
             res.status(200).json(savedMovie)
@@ -254,7 +248,6 @@ export const DeleteFavouriteController = async (req, res) => {
 
 export const DeleteMyMovieController = async (req, res) => {
     const dataUser = await Users.find({_id: req.dataAll._id})
-    console.log("dataUser: ", dataUser);
     if(dataUser) {
         const dataRequest = {
             _id: req.params.movieId,
