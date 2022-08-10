@@ -38,19 +38,20 @@ const getUser = userId => {
 const handleGroupNotification = listNotification => {
   if(groupNotification.length > 0 && listNotification.length > 0) {
     const newArray = []
-    const result = listNotification.forEach(data => {
+    listNotification.forEach(data => {
       if(!groupNotification.find(item=>item._id === data._id)) {
         newArray.push(data)
       }
     })
     groupNotification.concat(newArray)
-  } else {
+  } else if(listNotification.length > 0) {
     groupNotification = listNotification
   }
 }
 
 const setNotification = (data, id, currentChat) => {
   if(groupNotification.length <= 0) {
+    groupNotification.push(data)
     return
   }
   if(currentChat) {
@@ -70,10 +71,11 @@ const setNotification = (data, id, currentChat) => {
 
 const addNotification = data => {
   if(groupNotification.length <= 0) {
+    groupNotification.push(data)
     return
   }
   const index = groupNotification.findIndex(item=>item._id === data.conversationId)
-  groupNotification[index].list_user.forEach((item, indexOfListUser)=>{
+  groupNotification[index] && groupNotification[index].list_user.forEach((item, indexOfListUser)=>{
     if(item.user_id !== data.senderId) {
       if(!item.in_room) {
         const notificationChange = groupNotification[index].list_user[indexOfListUser]
@@ -81,7 +83,7 @@ const addNotification = data => {
       }
     }
   })
-  return groupNotification[index].list_user
+  return groupNotification[index]
 }
 
 const connectSocket = (server) => {
@@ -93,7 +95,7 @@ const connectSocket = (server) => {
     })
 
     socketIo.on("connection", (socket) => {
-        console.log("a user connected.", socket.id, users);
+        console.log("a user connected.", socket.id);
       
         // when connect 
         socket.on("addUser", (data)=> {
@@ -138,7 +140,6 @@ const connectSocket = (server) => {
 
         socket.on("AddNotification", notification => {
           const newNumber = addNotification(notification)
-          console.log("newNumber: ", newNumber);
           socketIo.emit("GetNotification", groupNotification)
         })
 
