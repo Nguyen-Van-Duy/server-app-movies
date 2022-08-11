@@ -1,5 +1,5 @@
 import express from 'express';
-import { SendProfileUserController } from '../controllers/ProfileUserController.js';
+import { SendProfileUserController, sendEmailController } from '../controllers/ProfileUserController.js';
 import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
@@ -15,5 +15,7 @@ router.post('/upload',upload.fields([
         name: 'image-poster', maxCount: 1
     }
 ]), SendProfileUserController)
+
+router.post('/send-email', sendEmailController)
 
 export default router;

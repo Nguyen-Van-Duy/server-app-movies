@@ -61,6 +61,30 @@ export const GetMovieAllController = async (req, res) => {
     }
 }
 
+export const FilterMovieAllController = async (req, res) => {
+    let params = req.body
+    params.approval = "1"
+    if(params.genres) {
+        params.genres = {$elemMatch: {value: params.genres}}
+    //     dataMovie = await ProductMovie.find({...params, genres: {$elemMatch: {value: params.genres}}})
+    // } else {
+    }
+    try {
+        const dataMovie = await ProductMovie.find(params)
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+    // try {
+    //     const dataMovie = await ProductMovie.find({
+    //         approval: "1"
+    //     })
+    //     res.status(200).json(dataMovie)
+    // } catch (error) {
+    //     res.status(500).json({ error})
+    // }
+}
+
 export const GetMovieDetailController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({

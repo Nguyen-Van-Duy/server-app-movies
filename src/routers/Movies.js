@@ -15,7 +15,8 @@ import { SendMovieController,
     UpdateApprovalController,
     GetMovieDetailFavouriteController,
     GetMovieAllController,
-    SearchController
+    SearchController,
+    FilterMovieAllController
 } from '../controllers/MovieController.js';
 import verifyToken from '../middleware/auth.js';
 
@@ -31,6 +32,7 @@ router.get('/movie-history/:userId', GetMovieHistoryController)
 router.get('/my-movie/:userId', GetMyMovieController)
 router.get('/movie-detail/:movieId', GetMovieDetailController)
 router.get('/all', GetMovieAllController)
+router.post('/filter', FilterMovieAllController)
 router.get('/movie-detail-favourite/:movieId', GetMovieDetailFavouriteController)
 router.post('/add-favourite', AddFavouriteController)
 router.delete('/delete-favourite/:favouriteId', DeleteFavouriteController)
