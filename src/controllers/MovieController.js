@@ -259,11 +259,11 @@ export const GetFavouriteController = async (req, res) => {
 }
 
 export const DeleteFavouriteController = async (req, res) => {
-    const dataRequest = {
-        _id: req.params.favouriteId,
-    }
     try {
-        const deleteFavouriteMovie = await FavouriteMovie.remove(dataRequest)
+        const deleteFavouriteMovie = await FavouriteMovie.deleteOne({
+            _id: req.params.favouriteId,
+        })
+        console.log(req.params.favouriteId, deleteFavouriteMovie);
         res.status(200).json(deleteFavouriteMovie)
     } catch (error) {
         res.status(500).json({ error})
@@ -277,7 +277,7 @@ export const DeleteMyMovieController = async (req, res) => {
             _id: req.params.movieId,
         }
         try {
-            const deleteMyMovie = await ProductMovie.remove(dataRequest)
+            const deleteMyMovie = await ProductMovie.deleteOne(dataRequest)
             res.status(200).json(deleteMyMovie)
         } catch (error) {
             res.status(500).json({ error})

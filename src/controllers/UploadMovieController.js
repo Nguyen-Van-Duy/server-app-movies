@@ -91,7 +91,7 @@ export const UpdateMovieController = async (req, res, next) => {
 
     const newProductMovie = new ProductMovie(dataResponse)
     // console.log("newProductMovie:", newProductMovie);
-    res.json(newProductMovie)
+    // res.json(newProductMovie)
     try {
         const savedProductMovie = await newProductMovie.save()
         res.status(200).json(savedProductMovie|| {})
