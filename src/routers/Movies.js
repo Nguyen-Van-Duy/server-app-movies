@@ -16,7 +16,8 @@ import { SendMovieController,
     GetMovieDetailFavouriteController,
     GetMovieAllController,
     SearchController,
-    FilterMovieAllController
+    FilterMovieAllController,
+    GetMovieUpdatingAdminController
 } from '../controllers/MovieController.js';
 import verifyToken from '../middleware/auth.js';
 
@@ -27,6 +28,7 @@ router.get('/search/:search/:page', SearchController)
 router.post('/add-movie-history', AddMovieHistoryController)
 router.get('/movie-waiting/:userId', GetMovieWaitingController)
 router.get('/movie-waiting', GetMovieWaitingAdminController)
+router.get('/movie-update', GetMovieUpdatingAdminController)
 router.post('/approval', verifyToken, UpdateApprovalController)
 router.get('/movie-history/:userId', GetMovieHistoryController)
 router.get('/my-movie/:userId', GetMyMovieController)

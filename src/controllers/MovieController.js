@@ -108,10 +108,21 @@ export const GetMovieDetailFavouriteController = async (req, res) => {
     }
 }
 
-export const GetMovieWaitingAdminController = async (req, res) => {
+export const GetMovieUpdatingAdminController = async (req, res) => {
     try {
         const dataMovie = await ProductMovie.find({
             approval: "0"
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const GetMovieWaitingAdminController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            approval: "3"
         })
         res.status(200).json(dataMovie)
     } catch (error) {
