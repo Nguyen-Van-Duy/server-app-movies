@@ -187,6 +187,21 @@ export const GetUserAllController = async (req, res) => {
     }
 }
 
+export const GetUserDetailController = async (req, res) => {
+    const newData = []
+    try {
+        const data = await Users.find({role: 'user'})
+        for(let i = 0; i < data.length; i++ ) {
+            const dataDetail = await ProfileUsers.find({user_id: data[i]._id.toString()})
+            newData.push({user_name: data[i].user_name, key: data[i]._id, email: data[i].email, avatar: dataDetail[0].avatar,hometown: dataDetail[0].hometown, phone: dataDetail[0].phone, createdAt: data[i].createdAt})
+        }
+        console.log(newData);
+        res.status(200).json(newData)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const ChangePasswordController = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
