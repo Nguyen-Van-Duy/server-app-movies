@@ -17,7 +17,9 @@ import { SendMovieController,
     GetMovieAllController,
     SearchController,
     FilterMovieAllController,
-    GetMovieUpdatingAdminController
+    GetMovieUpdatingAdminController,
+    ViewStatisticsController,
+    AddViewStatisticsController
 } from '../controllers/MovieController.js';
 import verifyToken from '../middleware/auth.js';
 
@@ -26,6 +28,8 @@ const router = express.Router();
 router.post('/add-movie', SendMovieController)
 router.get('/search/:search/:page', SearchController)
 router.post('/add-movie-history', AddMovieHistoryController)
+router.get('/view-statistics', ViewStatisticsController)
+router.post('/add-view-statistics', AddViewStatisticsController)
 router.get('/movie-waiting/:userId', GetMovieWaitingController)
 router.get('/movie-waiting', GetMovieWaitingAdminController)
 router.get('/movie-update', GetMovieUpdatingAdminController)

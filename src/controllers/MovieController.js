@@ -1,5 +1,6 @@
 import FavouriteMovie from '../models/FavouriteMovie.js';
 import History from '../models/History.js';
+import ViewStatistic from '../models/ViewStatistics.js';
 import ProductMovie from '../models/ProductMovie.js';
 import Users from '../models/Users.js';
 
@@ -205,6 +206,27 @@ export const DeleteMovieHistoryController = async (req, res) => {
             user_id: req.body.userId,
         })
         res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const ViewStatisticsController = async (req, res) => {
+    try {
+        const dataMovie = await ProductMovie.find({
+            approval: "1"
+        })
+        res.status(200).json(dataMovie)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const AddViewStatisticsController = async (req, res) => {
+    const newMovie = new ProductMovie(req.body)
+    try {
+        const savedMovie = await newMovie.save()
+        res.status(200).json(savedMovie)
     } catch (error) {
         res.status(500).json({ error})
     }

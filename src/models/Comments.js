@@ -17,7 +17,7 @@ const CommentSchema = new mongoose.Schema(
         message: {
             type: String
         }, 
-        feedback: {
+        reps: {
             type: Array
         },
     },
