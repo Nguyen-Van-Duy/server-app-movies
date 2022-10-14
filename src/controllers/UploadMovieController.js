@@ -99,3 +99,23 @@ export const UpdateMovieController = async (req, res, next) => {
         res.status(500).json({ error})
     }
 }
+
+export const AddScheduleController = async (req, res, next) => {
+    let dataRequest = JSON.parse(req.body.data)
+    // ProductMovie
+    let dataResponse = {...dataRequest} 
+
+    if(req && req.files && req.files?.avatar &&  req.files?.avatar[0]) {
+        dataResponse.image =  `image/${req.files.avatar[0].filename}`
+    }
+
+    const newProductMovie = new ProductMovie(dataResponse)
+    // console.log("newProductMovie:", newProductMovie);
+    // res.json(newProductMovie)
+    try {
+        const savedProductMovie = await newProductMovie.save()
+        res.status(200).json(savedProductMovie|| {})
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}

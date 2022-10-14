@@ -1,12 +1,11 @@
 import express from 'express';
-import { GetCommentController, SendCommentController, DeleteCommentController, EditCommentController } from '../controllers/CommentController.js';
-import { SendFeedbackController } from '../controllers/FeedbackController.js';
+import { SendFeedbackController, GetFeedbackController } from '../controllers/FeedbackController.js';
 
 const router = express.Router();
 
 router.get('', GetFeedbackController)
 router.post('/add-feedback', SendFeedbackController)
-router.delete('/delete/:commentId', DeleteCommentController)
+router.delete('/delete/:Id', SendFeedbackController)
 
 
 export default router;

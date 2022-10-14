@@ -6,6 +6,7 @@ import movie from './Movies.js';
 import profileUser from './ProfileUser.js';
 import uploadMovie from './UploadMovie.js';
 import comment from './Comments.js';
+import feedback from './Feedbacks.js';
 import express from 'express';
 
 let router = express.Router();
@@ -18,6 +19,7 @@ function route(app) {
     router.use('/profile', profileUser);
     router.use('/upload', uploadMovie)
     router.use('/comment', comment)
+    router.use('/feedback', feedback)
     return app.use('/api-movie/', router)
 }
 
