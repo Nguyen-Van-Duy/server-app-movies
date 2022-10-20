@@ -1,6 +1,8 @@
 // import ProfileUser from '../models/ProfileUser.js';
 import ProfileUsers from "../models/ProfileUsers.js"
 import nodemailer from 'nodemailer'
+import hash from 'object-hash'
+import jwt from 'jsonwebtoken'
 
 import Users from "../models/Users.js"
 
@@ -92,5 +94,91 @@ export const sendEmailController = async (req, res) => {
         res.json({info: info})
     } catch (error) {
         return res.status(400).json({ error: err.message });
+    }
+}
+
+export const forgotPasswordController = async (req, res) => {
+
+    const email = req.body.email
+    if(!email) return res.sendStatus(401)
+    const accessToken = jwt.sign({email: email}, 'duy', {expiresIn: '30s'})
+    try {
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+            user: process.env.EMAIL_APP, // generated ethereal user
+            pass: process.env.EMAIL_APP_PASSWORD, // generated ethereal password
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: '"Duy 👻" <duy124678@gmail.com>', // sender address
+            to: email, // list of receivers
+            subject: "Lấy lại mật khẩu ✔", // Subject line
+            html: `<h3>Xin chào ${email}!</h3>
+            <div><b>Thời gian: ${new Date()}</b></div>
+            <div><b>Sản phẩm: 1111111</b></div>
+
+            <p>Nếu thông tin trên là đúng sự thật, vui lòng click vào đường link bên đưới để xác nhận và hoàn tất thử tục đặt hàng</p>
+            <p>You requested for reset password, kindly use this <a href="http://localhost:3000/reset-password/${accessToken}">link</a> to reset your password</p>
+            <div><a href='https://www.youtube.com/' target="_blank">Click here</a></div>
+            <div>Xin chân thành cảm ơn!</div>
+            `
+        });
+        res.json({info: info})
+    } catch (error) {
+        return res.status(400).json({ error: err.message });
+    }
+}
+
+export const getForgotPasswordController = async (req, res) => {
+    const dataProfile = await ProfileUsers.find({user_id: req.dataAll._id})
+    const dataUser = await Users.find({_id: req.dataAll._id})
+    res.json({
+        status: 200,
+        _id: req.dataAll._id,
+        user_name: dataUser[0].user_name,
+        email: req.dataAll.email,
+        token: req.dataAll.accessToken,
+        role: req.dataAll.role,
+        profile_id: dataProfile[0]._id.toString() || '',
+        date_of_birth: dataProfile[0].date_of_birth || '',
+        hometown: dataProfile[0].hometown || '',
+        loves: dataProfile[0].loves || '',
+        hates: dataProfile[0].hates || '',
+        description: dataProfile[0].description || '',
+        phone: dataProfile[0].phone || '',
+        avatar: dataProfile[0].avatar || '',
+        gender: dataProfile[0].gender || '',
+        createdAt: dataProfile[0].createdAt || '',
+    })
+}
+
+export const ResetPasswordController = async (req, res) => {
+    const newPassword = req.body.newPassword
+    const newHasPassword = hash.MD5(newPassword)
+    try{
+        const data = await Users.find({email: req.dataAll.email})
+        if(data.length === 0) {
+            res.status(401).json({
+                message: "Incorrect password!",
+                data: data
+            })
+            return
+        }
+        const passwordUpdate = await Users.findOneAndUpdate(
+            { _id: data[0].id },
+            {password: newHasPassword},
+            { new: true }
+        )
+        res.json(passwordUpdate)
+    } catch(err) {
+        res.status(401).json({
+            message: 'Incorrect password!'
+        })
     }
 }

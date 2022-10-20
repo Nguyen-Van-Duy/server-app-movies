@@ -1,5 +1,6 @@
 import express from 'express';
-import { SendProfileUserController, sendEmailController } from '../controllers/ProfileUserController.js';
+import { SendProfileUserController, sendEmailController, forgotPasswordController, ResetPasswordController } from '../controllers/ProfileUserController.js';
+import verifyToken from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
@@ -17,5 +18,8 @@ router.post('/upload',upload.fields([
 ]), SendProfileUserController)
 
 router.post('/send-email', sendEmailController)
+
+router.post('/forgot-password', forgotPasswordController)
+router.post('/reset-password', verifyToken, ResetPasswordController)
 
 export default router;
