@@ -1,4 +1,5 @@
 import ProductMovie from "../models/ProductMovie.js"
+import Schedule from "../models/Schedules.js"
 // import ProfileUsers from "../models/ProfileUsers.js"
 import Users from "../models/Users.js"
 // import Users from "../models/Users.js"
@@ -100,6 +101,35 @@ export const UpdateMovieController = async (req, res, next) => {
     }
 }
 
+export const GetScheduleController = async (req, res) => {
+    try {
+        const data = await Schedule.find()
+        console.log(data);
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const GetScheduleIdController = async (req, res) => {
+    try {
+        const data = await Schedule.find({user_id: req.params.userId})
+        console.log(data);
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
+export const DeleteScheduleController = async (req, res) => {
+        try {
+            const deleteMyMovie = await Schedule.deleteOne({_id: req.params.scheduleId})
+            res.status(200).json(deleteMyMovie)
+        } catch (error) {
+            res.status(500).json({ error})
+        }
+}
+
 export const AddScheduleController = async (req, res, next) => {
     let dataRequest = JSON.parse(req.body.data)
     // ProductMovie
@@ -109,7 +139,7 @@ export const AddScheduleController = async (req, res, next) => {
         dataResponse.image =  `image/${req.files.avatar[0].filename}`
     }
 
-    const newProductMovie = new ProductMovie(dataResponse)
+    const newProductMovie = new Schedule(dataResponse)
     // console.log("newProductMovie:", newProductMovie);
     // res.json(newProductMovie)
     try {

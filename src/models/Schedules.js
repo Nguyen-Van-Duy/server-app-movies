@@ -11,20 +11,17 @@ const ScheduleSchema = new mongoose.Schema(
         image: {
             type: String
         },
-        category: {
+        password: {
             type: String
         },
         time: {
-            type: String
-        },
-        date: {
             type: String
         },
         genres: {
             type: Array
         },
         overview: {
-            type: Array
+            type: String
         },
     }, 
     { timestamps: true}

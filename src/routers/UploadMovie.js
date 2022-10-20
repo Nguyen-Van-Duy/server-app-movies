@@ -1,5 +1,5 @@
 import express from 'express';
-import { SendProductController, UpdateMovieController, AddScheduleController } from '../controllers/UploadMovieController.js';
+import { SendProductController, UpdateMovieController, AddScheduleController, GetScheduleController, GetScheduleIdController, DeleteScheduleController } from '../controllers/UploadMovieController.js';
 import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
@@ -51,5 +51,9 @@ router.post('/update-schedule', upload.fields([
         name: 'image_poster', maxCount: 1
     }
 ]), AddScheduleController)
+
+router.get('/schedule', GetScheduleController)
+router.get('/schedule/:userId', GetScheduleIdController)
+router.delete('/delete-schedule/:scheduleId', DeleteScheduleController)
 
 export default router;
