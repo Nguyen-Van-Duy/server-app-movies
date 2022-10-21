@@ -31,7 +31,7 @@ app.use(allowCrossDomain);
 
 // app.use('/', posts)
 app.use(cors())
-app.use("/lo", (req, res)=> res.json({id: 1}))
+// app.use("/lo", (req, res)=> res.json({id: 1}))
 route(app)
 connectSocket(server)
 mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true})

@@ -5,6 +5,15 @@ import jwt from 'jsonwebtoken'
 import Conversation from "../models/Conversation.js";
 import ProfileUsers from '../models/ProfileUsers.js';
 
+export const DeleteController = async (req, res) => {
+    try {
+        const data = await Users.deleteOne({_id: req.params.id})
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const CreateAccount = async (req, res) => {
     const password = req.body.password
     const HasPassword = hash.MD5(password)

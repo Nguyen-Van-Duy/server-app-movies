@@ -1,5 +1,5 @@
 import express from 'express';
-import {CreateAccount, LoginController, GetUserController, GetDataInfo, GetUserAllController, GetAdminController, GetUserDetailController, ChangePasswordController, GetProfileController} from "../controllers/UserController.js"
+import {CreateAccount, DeleteController, LoginController, GetUserController, GetDataInfo, GetUserAllController, GetAdminController, GetUserDetailController, ChangePasswordController, GetProfileController} from "../controllers/UserController.js"
 import verifyToken from "../middleware/auth.js"
 
 const router = express.Router();
@@ -13,6 +13,6 @@ router.get('/profile/:userId', GetProfileController)
 router.get('/admin', GetAdminController)
 router.get('/user', GetUserAllController)
 router.get('/user-detail', GetUserDetailController)
-
+router.delete('/delete-account/:id', DeleteController)
 
 export default router;

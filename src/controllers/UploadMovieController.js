@@ -111,6 +111,16 @@ export const GetScheduleController = async (req, res) => {
     }
 }
 
+export const GetScheduleDetailController = async (req, res) => {
+    try {
+        const data = await Schedule.find({_id: req.params.movieId})
+        console.log(data);
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
+
 export const GetScheduleIdController = async (req, res) => {
     try {
         const data = await Schedule.find({user_id: req.params.userId})

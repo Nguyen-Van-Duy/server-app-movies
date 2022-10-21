@@ -101,7 +101,7 @@ export const forgotPasswordController = async (req, res) => {
 
     const email = req.body.email
     if(!email) return res.sendStatus(401)
-    const accessToken = jwt.sign({email: email}, 'duy', {expiresIn: '30s'})
+    const accessToken = jwt.sign({email: email}, 'duy', {expiresIn: '60s'})
     try {
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
@@ -121,12 +121,7 @@ export const forgotPasswordController = async (req, res) => {
             subject: "Lấy lại mật khẩu ✔", // Subject line
             html: `<h3>Xin chào ${email}!</h3>
             <div><b>Thời gian: ${new Date()}</b></div>
-            <div><b>Sản phẩm: 1111111</b></div>
-
-            <p>Nếu thông tin trên là đúng sự thật, vui lòng click vào đường link bên đưới để xác nhận và hoàn tất thử tục đặt hàng</p>
-            <p>You requested for reset password, kindly use this <a href="http://localhost:3000/reset-password/${accessToken}">link</a> to reset your password</p>
-            <div><a href='https://www.youtube.com/' target="_blank">Click here</a></div>
-            <div>Xin chân thành cảm ơn!</div>
+            <p>You Click on this link to create a new password <a href="http://localhost:3000/reset-password/${accessToken}">link</a></p>
             `
         });
         res.json({info: info})
@@ -159,10 +154,12 @@ export const getForgotPasswordController = async (req, res) => {
 }
 
 export const ResetPasswordController = async (req, res) => {
-    const newPassword = req.body.newPassword
+    const newPassword = req.body.password
     const newHasPassword = hash.MD5(newPassword)
     try{
         const data = await Users.find({email: req.dataAll.email})
+        console.log("newPassword", newPassword);
+        console.log("data", data);
         if(data.length === 0) {
             res.status(401).json({
                 message: "Incorrect password!",
@@ -170,6 +167,7 @@ export const ResetPasswordController = async (req, res) => {
             })
             return
         }
+        console.log("data[0]", data[0]);
         const passwordUpdate = await Users.findOneAndUpdate(
             { _id: data[0].id },
             {password: newHasPassword},

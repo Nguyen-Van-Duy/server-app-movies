@@ -133,6 +133,7 @@ export const GetMovieWaitingAdminController = async (req, res) => {
 
 export const UpdateApprovalController = async (req, res) => {
     const dataUser = await Users.find({_id: req.dataAll._id})
+    console.log(dataUser, req.dataAll._id);
     if(dataUser[0].role === "admin") {
         try {
             const dataMovie = await ProductMovie.findOneAndUpdate(

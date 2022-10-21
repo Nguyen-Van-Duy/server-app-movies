@@ -20,3 +20,12 @@ export const GetFeedbackController = async (req, res) => {
         res.status(500).json({ error})
     }
 }
+
+export const DeleteFeedbackController = async (req, res) => {
+    try {
+        const data = await FeedBack.deleteOne({_id: req.params.id})
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json({ error})
+    }
+}
