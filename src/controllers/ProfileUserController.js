@@ -5,6 +5,7 @@ import hash from 'object-hash'
 import jwt from 'jsonwebtoken'
 
 import Users from "../models/Users.js"
+import Schedules from "../models/Schedules.js"
 
 export const SendProfileUserController = async (req, res, next) => {
     let dataRequest = JSON.parse(req.body.data)
@@ -55,6 +56,26 @@ export const SendProfileUserController = async (req, res, next) => {
         gender: profileUpdate.gender,
         createdAt: profileUpdate.createdAt,
     })
+}
+
+export const UpdateScheduleController = async (req, res, next) => {
+    let dataRequest = JSON.parse(req.body.data)
+    let dataResponse = {...dataRequest} 
+    console.log(dataResponse)
+
+    if(req && req.files && req.files?.avatar &&  req.files?.avatar[0]) {
+        dataResponse.avatar =  `image/${req.files.avatar[0].filename}`
+    }
+
+    const scheduleUpdate = await Schedules.findOneAndUpdate(
+        { _id: dataRequest.id },
+        dataResponse,
+        { new: true }
+    )
+    
+        // console.log("userUpdate", userUpdate);
+    // Display uploaded image for user validation
+    res.json(scheduleUpdate)
 }
         // res.send(`You have uploaded this image: <hr/><img src="/image/${req.file.filename}" width="500"><hr /><a href="./">Upload another image</a>`);
 
